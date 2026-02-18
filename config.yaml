@@ -1,0 +1,116 @@
+# Application Configuration
+
+# Server settings
+server:
+  port: 8080
+  mode: debug  # debug, release, test
+  read_timeout: 30s
+  write_timeout: 30s
+  idle_timeout: 60s
+
+  # CORS settings
+  cors:
+    enabled: true
+    allow_origins:
+      - http://localhost:3000
+      - http://localhost:8080
+    allow_methods:
+      - GET
+      - POST
+      - PUT
+      - PATCH
+      - DELETE
+      - OPTIONS
+    allow_headers:
+      - Origin
+      - Content-Type
+      - Accept
+      - Authorization
+      - X-Request-ID
+    allow_credentials: true
+    max_age: 12h
+    expose_headers:
+      - X-Request-ID
+      - X-Total-Count
+
+  # Rate limiting settings
+  rate_limit:
+    enabled: true
+    requests_per_second: 100
+    burst: 200
+    prefix: api
+
+  # Security headers
+  security:
+    enabled: true
+    x_frame_options: DENY
+    x_content_type_options: nosniff
+    x_xss_protection: "1; mode=block"
+    strict_transport_security: max-age=31536000; includeSubDomains
+    content_security_policy: "default-src 'self'"
+    referrer_policy: strict-origin-when-cross-origin
+
+# Database configuration
+database:
+  driver: postgres  # postgres, mysql, sqlite
+
+  # PostgreSQL settings
+  host: localhost
+  port: 5432
+  user: postgres
+  password: password
+  name: payment_db
+
+  # MySQL settings (if using mysql)
+  # host: localhost
+  # port: 3306
+  # user: root
+  # password: your_password
+  # name: payment_db
+
+  # SQLite settings (if using sqlite)
+  # Note: SQLite requires CGO. Build with: go build -tags sqlite
+  # dsn: app.db
+
+  # Connection pool settings
+  max_idle_conns: 10
+  max_open_conns: 100
+  conn_max_lifetime: 1h
+
+  level: info  # silent, error, warn, info
+  slow_threshold_ms: 200
+  ignore_record_not_found: true
+
+# JWT settings
+jwt:
+  secret: your-super-secret-key-change-in-production
+  expire_hour: 24
+
+# Logger configuration
+logger:
+  level: debug  # trace, debug, info, warn, error, fatal, panic
+  format: json  # json, console (pretty)
+  
+  # Output settings
+  output:
+    - stdout
+    - file
+  
+  # File logging settings
+  file:
+    enabled: true
+    path: logs/app.log
+    max_size: 50      # MB
+    max_backups: 3
+    max_age: 28       # days
+    compress: false
+  
+  # Console output settings (when format is console)
+  console:
+    color: true
+    time_format: rfc3339  # rfc3339, unix, unix_ms, unix_nano
+  
+  # Caller settings
+  caller:
+    enabled: true
+    skip_frames: 3  # Adjust based on your logger wrapper depth

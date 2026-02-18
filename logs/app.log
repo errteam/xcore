@@ -1,0 +1,241 @@
+{"level":"info","time":"2026-02-18T13:39:17+06:30","caller":"D:/errteam/xcore-example/cmd/server/main.go:45","message":"Starting server..."}
+{"level":"info","time":"2026-02-18T13:39:17+06:30","caller":"D:/errteam/xcore-example/cmd/server/main.go:54","message":"Cache initialized (memory)"}
+{"level":"fatal","error":"failed to connect to database: Binary was compiled with 'CGO_ENABLED=0', go-sqlite3 requires cgo to work. This is a stub","time":"2026-02-18T13:39:17+06:30","caller":"D:/errteam/xcore-example/cmd/server/main.go:72","message":"Failed to initialize database"}
+{"level":"info","time":"2026-02-18T13:39:34+06:30","caller":"D:/errteam/xcore-example/cmd/server/main.go:45","message":"Starting server..."}
+{"level":"info","time":"2026-02-18T13:39:34+06:30","caller":"D:/errteam/xcore-example/cmd/server/main.go:54","message":"Cache initialized (memory)"}
+{"level":"fatal","error":"failed to connect to database: Binary was compiled with 'CGO_ENABLED=0', go-sqlite3 requires cgo to work. This is a stub","time":"2026-02-18T13:39:34+06:30","caller":"D:/errteam/xcore-example/cmd/server/main.go:72","message":"Failed to initialize database"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:45","message":"Starting server..."}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:54","message":"Cache initialized (memory)"}
+{"level":"info","driver":"sqlite","host":"","port":0,"name":"","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/database.go:151","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:74","message":"Database initialized (SQLite)"}
+{"level":"info","sql":"SELECT count(*) FROM sqlite_master WHERE type='table' AND name=\"users\"","rows":-1,"duration":"20µs","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"CREATE TABLE `users` (`id` integer PRIMARY KEY AUTOINCREMENT,`name` text NOT NULL,`email` text,`created_at` datetime,`updated_at` datetime)","rows":0,"duration":"3ms","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"CREATE UNIQUE INDEX `idx_users_email` ON `users`(`email`)","rows":0,"duration":"5ms","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT count(*) FROM sqlite_master WHERE type='table' AND name=\"products\"","rows":-1,"duration":"46µs","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"CREATE TABLE `products` (`id` integer PRIMARY KEY AUTOINCREMENT,`name` text NOT NULL,`description` text,`price` decimal(10,2),`stock` integer,`created_at` datetime,`updated_at` datetime)","rows":0,"duration":"4ms","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:80","message":"Database migrated"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:104","message":"Health check initialized"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:110","message":"Metrics collector initialized"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:156","message":"WebSocket hub started"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/websocket.go:187","message":"WebSocket hub started"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:115","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:186","message":"Shutdown handler initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:254","message":"Server starting"}
+{"level":"info","time":"2026-02-18T07:10:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:691","message":"\n╔═══════════════════════════════════════════════════════════╗\n║                    Server Started                         ║\n╠═══════════════════════════════════════════════════════════╣\n║  HTTP Server:  http://localhost:8080                     ║\n║  Health Check: http://localhost:8080  /health                   ║\n║  Metrics:      http://localhost:8080  /metrics                  ║\n║  WebSocket:    ws://localhost:8080  /ws                       ║\n╠═══════════════════════════════════════════════════════════╣\n║  Demo Endpoints:                                          ║\n║  - GET  /api/demo/request-info                            ║\n║  - GET  /api/demo/slow                                    ║\n║  - GET  /api/demo/error                                   ║\n║  - POST /api/demo/broadcast                               ║\n║  - GET  /api/users                                        ║\n║  - POST /api/users                                        ║\n║  - GET  /api/cache/set                                    ║\n╚═══════════════════════════════════════════════════════════╝\n"}
+{"level":"info","request_id":"req_AGOG7FPMHUX66GTLKOBKN2M4TU","method":"GET","path":"/health","query":"","status":200,"duration":0.593597,"ip":"::1","time":"2026-02-18T07:10:22Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/middlewares.go:134","message":"Request completed"}
+{"level":"debug","request_id":"req_AGOG7FQARMSA44CGN7XEXMEU77","path":"/api/demo/request-info","time":"2026-02-18T07:10:27Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:365","message":"Request info"}
+{"level":"info","request_id":"req_AGOG7FQARMSA44CGN7XEXMEU77","method":"GET","path":"/api/demo/request-info","query":"","status":200,"duration":0.617928,"ip":"::1","time":"2026-02-18T07:10:27Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/middlewares.go:134","message":"Request completed"}
+{"level":"debug","request_id":"req_AGOG7FRE2AOQEOU6EAKYCBAMMB","path":"/api/demo/request-info","time":"2026-02-18T07:10:36Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:365","message":"Request info"}
+{"level":"info","request_id":"req_AGOG7FRE2AOQEOU6EAKYCBAMMB","method":"GET","path":"/api/demo/request-info","query":"","status":200,"duration":0.68344,"ip":"::1","time":"2026-02-18T07:10:36Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/middlewares.go:134","message":"Request completed"}
+{"level":"warn","duration":2001.388575,"time":"2026-02-18T07:11:03Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:386","message":"Slow request completed"}
+{"level":"info","request_id":"req_AGOG7FUEKQWRCKS2J6Z6YMVEZM","method":"GET","path":"/api/demo/slow","query":"","status":200,"duration":2002.33879,"ip":"::1","time":"2026-02-18T07:11:03Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/middlewares.go:134","message":"Request completed"}
+{"level":"error","time":"2026-02-18T07:11:09Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:395","message":"Demo error triggered"}
+{"level":"info","request_id":"req_AGOG7FVDWI7KLONPV5MPHL42Y2","method":"GET","path":"/api/demo/error","query":"","status":500,"duration":0.473488,"ip":"::1","time":"2026-02-18T07:11:09Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/middlewares.go:134","message":"Request completed"}
+{"level":"info","clients":0,"time":"2026-02-18T07:11:23Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:425","message":"Broadcast sent"}
+{"level":"info","request_id":"req_AGOG7FWZPEXMGRWAMGE7JLOHOQ","method":"POST","path":"/api/demo/broadcast","query":"","status":200,"duration":0.599019,"ip":"::1","time":"2026-02-18T07:11:23Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/middlewares.go:134","message":"Request completed"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T07:17:00Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:111","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T07:17:00Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:128","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T07:17:00Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:180","message":"Closing cache..."}
+{"level":"info","time":"2026-02-18T07:17:00Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:175","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T07:17:00Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/database.go:231","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T07:17:00Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:169","message":"Shutting down WebSocket hub..."}
+{"level":"info","time":"2026-02-18T07:17:00Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/websocket.go:206","message":"Shutting down WebSocket hub..."}
+{"level":"info","time":"2026-02-18T07:17:00Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:158","message":"Graceful shutdown completed successfully"}
+{"level":"info","connections":0,"time":"2026-02-18T07:17:00Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/websocket.go:218","message":"WebSocket hub stopped"}
+{"level":"info","time":"2026-02-18T07:17:02Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:274","message":"Server stopped"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:45","message":"Starting server..."}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:54","message":"Cache initialized (memory)"}
+{"level":"info","driver":"sqlite","host":"","port":0,"name":"","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/database.go:151","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:74","message":"Database initialized (SQLite)"}
+{"level":"info","sql":"SELECT count(*) FROM sqlite_master WHERE type='table' AND name=\"users\"","rows":-1,"duration":"20µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT sql FROM sqlite_master WHERE type IN (\"table\",\"index\") AND tbl_name = \"users\" AND sql IS NOT NULL order by type = \"table\" desc","rows":2,"duration":"1ms","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT * FROM `users` LIMIT 1","rows":-1,"duration":"22µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT count(*) FROM sqlite_master WHERE type = \"index\" AND tbl_name = \"users\" AND name = \"idx_users_email\"","rows":-1,"duration":"17µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT count(*) FROM sqlite_master WHERE type='table' AND name=\"products\"","rows":-1,"duration":"14µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT sql FROM sqlite_master WHERE type IN (\"table\",\"index\") AND tbl_name = \"products\" AND sql IS NOT NULL order by type = \"table\" desc","rows":1,"duration":"595µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT * FROM `products` LIMIT 1","rows":-1,"duration":"18µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"PRAGMA foreign_keys","rows":1,"duration":"14µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT sql FROM sqlite_master WHERE type = \"table\" AND tbl_name = \"products\" AND name = \"products\"","rows":-1,"duration":"16µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"CREATE TABLE `products__temp`  (`id` integer PRIMARY KEY AUTOINCREMENT,`name` text NOT NULL,`description` text,`price` decimal(10,2),`stock` integer,`created_at` datetime,`updated_at` datetime)","rows":0,"duration":"1ms","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"INSERT INTO `products__temp`(`id`,`name`,`description`,`price`,`stock`,`created_at`,`updated_at`) SELECT `id`,`name`,`description`,`price`,`stock`,`created_at`,`updated_at` FROM `products`","rows":0,"duration":"582µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"DROP TABLE `products`","rows":0,"duration":"369µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"ALTER TABLE `products__temp` RENAME TO `products`","rows":0,"duration":"210µs","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:80","message":"Database migrated"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:104","message":"Health check initialized"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:110","message":"Metrics collector initialized"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:156","message":"WebSocket hub started"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/websocket.go:187","message":"WebSocket hub started"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:115","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:186","message":"Shutdown handler initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:254","message":"Server starting"}
+{"level":"info","time":"2026-02-18T07:17:04Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:691","message":"\n╔═══════════════════════════════════════════════════════════╗\n║                    Server Started                         ║\n╠═══════════════════════════════════════════════════════════╣\n║  HTTP Server:  http://localhost:8080                     ║\n║  Health Check: http://localhost:8080  /health                   ║\n║  Metrics:      http://localhost:8080  /metrics                  ║\n║  WebSocket:    ws://localhost:8080  /ws                       ║\n╠═══════════════════════════════════════════════════════════╣\n║  Demo Endpoints:                                          ║\n║  - GET  /api/demo/request-info                            ║\n║  - GET  /api/demo/slow                                    ║\n║  - GET  /api/demo/error                                   ║\n║  - POST /api/demo/broadcast                               ║\n║  - GET  /api/users                                        ║\n║  - POST /api/users                                        ║\n║  - GET  /api/cache/set                                    ║\n╚═══════════════════════════════════════════════════════════╝\n"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T07:17:23Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:111","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T07:17:23Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:128","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T07:17:23Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:180","message":"Closing cache..."}
+{"level":"info","time":"2026-02-18T07:17:23Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:175","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T07:17:23Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/database.go:231","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T07:17:23Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:169","message":"Shutting down WebSocket hub..."}
+{"level":"info","time":"2026-02-18T07:17:23Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/websocket.go:206","message":"Shutting down WebSocket hub..."}
+{"level":"info","time":"2026-02-18T07:17:23Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:158","message":"Graceful shutdown completed successfully"}
+{"level":"info","connections":0,"time":"2026-02-18T07:17:23Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/websocket.go:218","message":"WebSocket hub stopped"}
+{"level":"info","time":"2026-02-18T07:17:25Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:274","message":"Server stopped"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:45","message":"Starting server..."}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:54","message":"Cache initialized (memory)"}
+{"level":"info","driver":"sqlite","host":"","port":0,"name":"","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/database.go:151","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:74","message":"Database initialized (SQLite)"}
+{"level":"info","sql":"SELECT count(*) FROM sqlite_master WHERE type='table' AND name=\"users\"","rows":-1,"duration":"19µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT sql FROM sqlite_master WHERE type IN (\"table\",\"index\") AND tbl_name = \"users\" AND sql IS NOT NULL order by type = \"table\" desc","rows":2,"duration":"596µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT * FROM `users` LIMIT 1","rows":-1,"duration":"19µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT count(*) FROM sqlite_master WHERE type = \"index\" AND tbl_name = \"users\" AND name = \"idx_users_email\"","rows":-1,"duration":"15µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT count(*) FROM sqlite_master WHERE type='table' AND name=\"products\"","rows":-1,"duration":"11µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT sql FROM sqlite_master WHERE type IN (\"table\",\"index\") AND tbl_name = \"products\" AND sql IS NOT NULL order by type = \"table\" desc","rows":1,"duration":"642µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT * FROM `products` LIMIT 1","rows":-1,"duration":"16µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"PRAGMA foreign_keys","rows":1,"duration":"12µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"SELECT sql FROM sqlite_master WHERE type = \"table\" AND tbl_name = \"products\" AND name = \"products\"","rows":-1,"duration":"12µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"CREATE TABLE `products__temp`  (`id` integer PRIMARY KEY AUTOINCREMENT,`name` text NOT NULL,`description` text,`price` decimal(10,2),`stock` integer,`created_at` datetime,`updated_at` datetime)","rows":0,"duration":"2ms","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"INSERT INTO `products__temp`(`id`,`name`,`description`,`price`,`stock`,`created_at`,`updated_at`) SELECT `id`,`name`,`description`,`price`,`stock`,`created_at`,`updated_at` FROM `products`","rows":0,"duration":"385µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"DROP TABLE `products`","rows":0,"duration":"293µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","sql":"ALTER TABLE `products__temp` RENAME TO `products`","rows":0,"duration":"204µs","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/gorm_logger.go:161","message":"SQL executed"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:80","message":"Database migrated"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:104","message":"Health check initialized"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:110","message":"Metrics collector initialized"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:156","message":"WebSocket hub started"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/websocket.go:187","message":"WebSocket hub started"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:115","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:186","message":"Shutdown handler initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:254","message":"Server starting"}
+{"level":"info","time":"2026-02-18T07:17:29Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:691","message":"\n╔═══════════════════════════════════════════════════════════╗\n║                    Server Started                         ║\n╠═══════════════════════════════════════════════════════════╣\n║  HTTP Server:  http://localhost:8080                     ║\n║  Health Check: http://localhost:8080  /health                   ║\n║  Metrics:      http://localhost:8080  /metrics                  ║\n║  WebSocket:    ws://localhost:8080  /ws                       ║\n╠═══════════════════════════════════════════════════════════╣\n║  Demo Endpoints:                                          ║\n║  - GET  /api/demo/request-info                            ║\n║  - GET  /api/demo/slow                                    ║\n║  - GET  /api/demo/error                                   ║\n║  - POST /api/demo/broadcast                               ║\n║  - GET  /api/users                                        ║\n║  - POST /api/users                                        ║\n║  - GET  /api/cache/set                                    ║\n╚═══════════════════════════════════════════════════════════╝\n"}
+{"level":"debug","request_id":"req_AGOG7HERWET7BIWXLVPDTNUPYS","path":"/api/demo/request-info","time":"2026-02-18T07:17:37Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:365","message":"Request info"}
+{"level":"info","request_id":"req_AGOG7HERWET7BIWXLVPDTNUPYS","method":"GET","path":"/api/demo/request-info","query":"","status":200,"duration":1.072044,"ip":"::1","time":"2026-02-18T07:17:37Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/middlewares.go:134","message":"Request completed"}
+{"level":"debug","method":"GET","path":"/api/demo/request-infod","time":"2026-02-18T07:17:40Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/router.go:127","message":"Route not found"}
+{"level":"debug","method":"POST","path":"/api/demo/request-info","time":"2026-02-18T07:17:47Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/router.go:127","message":"Route not found"}
+{"level":"debug","method":"POST","path":"/api/demo/request-info","time":"2026-02-18T07:17:49Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/router.go:127","message":"Route not found"}
+{"level":"debug","request_id":"req_AGOG7HHAMUU3ATAZLHMICVF3CK","path":"/api/demo/request-info","time":"2026-02-18T07:17:57Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:365","message":"Request info"}
+{"level":"info","request_id":"req_AGOG7HHAMUU3ATAZLHMICVF3CK","method":"GET","path":"/api/demo/request-info","query":"","status":200,"duration":0.517476,"ip":"::1","time":"2026-02-18T07:17:57Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/middlewares.go:134","message":"Request completed"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T08:34:21Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:111","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T08:34:21Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:128","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T08:34:21Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:180","message":"Closing cache..."}
+{"level":"info","time":"2026-02-18T08:34:21Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:175","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T08:34:21Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/database.go:231","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T08:34:21Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:169","message":"Shutting down WebSocket hub..."}
+{"level":"info","time":"2026-02-18T08:34:21Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/websocket.go:206","message":"Shutting down WebSocket hub..."}
+{"level":"info","time":"2026-02-18T08:34:21Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/shutdown.go:158","message":"Graceful shutdown completed successfully"}
+{"level":"info","connections":0,"time":"2026-02-18T08:34:21Z","caller":"/mnt/d/errteam/xcore-example/pkg/xcore/websocket.go:218","message":"WebSocket hub stopped"}
+{"level":"info","time":"2026-02-18T08:34:23Z","caller":"/mnt/d/errteam/xcore-example/cmd/server/main.go:274","message":"Server stopped"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Successfully connected to database"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Database initialized"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Shutdown handler initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Server starting"}
+{"level":"info","signal":"interrupt","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Received shutdown signal"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Starting graceful shutdown..."}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Closing database connection..."}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Database connection closed successfully"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Graceful shutdown completed successfully"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Successfully connected to database"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Database initialized"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Shutdown handler initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Server starting"}
+{"level":"info","signal":"interrupt","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Received shutdown signal"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Starting graceful shutdown..."}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Closing database connection..."}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Database connection closed successfully"}
+{"level":"info","time":"RFC8889","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Graceful shutdown completed successfully"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T08:46:15Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T08:46:15Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Database initialized"}
+{"level":"info","time":"2026-02-18T08:46:15Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T08:46:15Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Shutdown handler initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T08:46:15Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Server starting"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T08:47:47Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T08:47:47Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T08:47:47Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T08:47:47Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T08:47:47Z","caller":"/home/xinku/go/pkg/mod/github.com/rs/zerolog@v1.34.0/event.go:143","message":"Graceful shutdown completed successfully"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T08:47:49Z","caller":"main.go:70","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T08:47:49Z","caller":"proc.go:290","message":"Database initialized"}
+{"level":"info","time":"2026-02-18T08:47:49Z","caller":"main.go:93","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T08:47:49Z","caller":"proc.go:290","message":"Shutdown handler initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T08:47:49Z","caller":"proc.go:290","message":"Server starting"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T08:48:02Z","caller":"asm_amd64.s:1771","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T08:48:02Z","caller":"shutdown.go:112","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T08:48:02Z","caller":"shutdown.go:146","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T08:48:02Z","caller":"main.go:90","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T08:48:02Z","caller":"shutdown.go:112","message":"Graceful shutdown completed successfully"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T09:25:20Z","caller":"main.go:27","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T09:25:20Z","caller":"proc.go:290","message":"Database initialized"}
+{"level":"info","time":"2026-02-18T09:25:20Z","caller":"proc.go:290","message":"Database migrated"}
+{"level":"info","time":"2026-02-18T09:25:20Z","caller":"main.go:50","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T09:25:20Z","caller":"proc.go:290","message":"Shutdown handler initialized"}
+{"level":"info","time":"2026-02-18T09:25:20Z","caller":"main.go:54","message":"Metrics collector initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T09:25:20Z","caller":"proc.go:290","message":"Server starting"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T09:25:38Z","caller":"asm_amd64.s:1771","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T09:25:38Z","caller":"shutdown.go:112","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T09:25:38Z","caller":"shutdown.go:146","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T09:25:38Z","caller":"main.go:47","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T09:25:38Z","caller":"shutdown.go:112","message":"Graceful shutdown completed successfully"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T09:25:39Z","caller":"main.go:27","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T09:25:39Z","caller":"proc.go:290","message":"Database initialized"}
+{"level":"info","time":"2026-02-18T09:25:39Z","caller":"proc.go:290","message":"Database migrated"}
+{"level":"info","time":"2026-02-18T09:25:39Z","caller":"main.go:50","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T09:25:39Z","caller":"proc.go:290","message":"Shutdown handler initialized"}
+{"level":"info","time":"2026-02-18T09:25:39Z","caller":"main.go:54","message":"Metrics collector initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T09:25:39Z","caller":"proc.go:290","message":"Server starting"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T09:25:44Z","caller":"asm_amd64.s:1771","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T09:25:44Z","caller":"shutdown.go:112","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T09:25:44Z","caller":"shutdown.go:146","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T09:25:44Z","caller":"main.go:47","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T09:25:44Z","caller":"shutdown.go:112","message":"Graceful shutdown completed successfully"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T09:25:45Z","caller":"main.go:27","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T09:25:45Z","caller":"proc.go:290","message":"Database initialized"}
+{"level":"info","time":"2026-02-18T09:25:45Z","caller":"proc.go:290","message":"Database migrated"}
+{"level":"info","time":"2026-02-18T09:25:45Z","caller":"main.go:50","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T09:25:45Z","caller":"proc.go:290","message":"Shutdown handler initialized"}
+{"level":"info","time":"2026-02-18T09:25:45Z","caller":"main.go:54","message":"Metrics collector initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T09:25:45Z","caller":"proc.go:290","message":"Server starting"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T09:25:52Z","caller":"asm_amd64.s:1771","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T09:25:52Z","caller":"shutdown.go:112","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T09:25:52Z","caller":"shutdown.go:146","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T09:25:52Z","caller":"main.go:47","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T09:25:52Z","caller":"shutdown.go:112","message":"Graceful shutdown completed successfully"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T09:25:54Z","caller":"main.go:27","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T09:25:54Z","caller":"proc.go:290","message":"Database initialized"}
+{"level":"info","time":"2026-02-18T09:25:54Z","caller":"proc.go:290","message":"Database migrated"}
+{"level":"info","time":"2026-02-18T09:25:54Z","caller":"main.go:50","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T09:25:54Z","caller":"proc.go:290","message":"Shutdown handler initialized"}
+{"level":"info","time":"2026-02-18T09:25:54Z","caller":"main.go:54","message":"Metrics collector initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T09:25:54Z","caller":"proc.go:290","message":"Server starting"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T09:28:04Z","caller":"asm_amd64.s:1771","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T09:28:04Z","caller":"shutdown.go:112","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T09:28:04Z","caller":"shutdown.go:146","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T09:28:04Z","caller":"main.go:47","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T09:28:04Z","caller":"shutdown.go:112","message":"Graceful shutdown completed successfully"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T09:28:07Z","caller":"main.go:27","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T09:28:07Z","caller":"proc.go:290","message":"Database initialized"}
+{"level":"info","time":"2026-02-18T09:28:07Z","caller":"proc.go:290","message":"Database migrated"}
+{"level":"info","time":"2026-02-18T09:28:07Z","caller":"main.go:50","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T09:28:07Z","caller":"proc.go:290","message":"Shutdown handler initialized"}
+{"level":"info","time":"2026-02-18T09:28:07Z","caller":"main.go:54","message":"Metrics collector initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T09:28:07Z","caller":"proc.go:290","message":"Server starting"}
+{"level":"debug","method":"GET","path":"/login","time":"2026-02-18T09:28:21Z","caller":"server.go:2286","message":"Method not allowed"}
+{"level":"info","request_id":"req_AGOHAFCNCUX6SBKV66M26T6J2F","method":"POST","path":"/login","query":"","status":200,"duration":0.024239,"ip":"::1","time":"2026-02-18T09:28:24Z","caller":"server.go:2286","message":"Request completed"}
+{"level":"info","request_id":"req_AGOHAFDBBILEX2DXD6IMN4INFY","method":"POST","path":"/register","query":"","status":200,"duration":0.16868,"ip":"::1","time":"2026-02-18T09:28:29Z","caller":"server.go:2286","message":"Request completed"}
+{"level":"info","request_id":"req_AGOHAFILQM2JHTPFU2LRAGBBMG","method":"POST","path":"/register","query":"","status":200,"duration":0.055124,"ip":"::1","time":"2026-02-18T09:29:13Z","caller":"server.go:2286","message":"Request completed"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T09:29:33Z","caller":"asm_amd64.s:1771","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T09:29:33Z","caller":"shutdown.go:112","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T09:29:33Z","caller":"shutdown.go:146","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T09:29:33Z","caller":"main.go:47","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T09:29:33Z","caller":"shutdown.go:112","message":"Graceful shutdown completed successfully"}
+{"level":"info","driver":"postgres","host":"localhost","port":5432,"name":"payment_db","max_idle_conns":10,"max_open_conns":100,"time":"2026-02-18T09:29:35Z","caller":"main.go:27","message":"Successfully connected to database"}
+{"level":"info","time":"2026-02-18T09:29:35Z","caller":"proc.go:290","message":"Database initialized"}
+{"level":"info","time":"2026-02-18T09:29:35Z","caller":"proc.go:290","message":"Database migrated"}
+{"level":"info","time":"2026-02-18T09:29:35Z","caller":"main.go:50","message":"Shutdown handler is listening for signals"}
+{"level":"info","time":"2026-02-18T09:29:35Z","caller":"proc.go:290","message":"Shutdown handler initialized"}
+{"level":"info","time":"2026-02-18T09:29:35Z","caller":"main.go:54","message":"Metrics collector initialized"}
+{"level":"info","port":8080,"mode":"debug","time":"2026-02-18T09:29:35Z","caller":"proc.go:290","message":"Server starting"}
+{"level":"info","request_id":"req_AGOHAFLGNQGPEGUDC7PLXWTHL3","method":"POST","path":"/register","query":"","status":400,"duration":0.135433,"ip":"::1","time":"2026-02-18T09:29:36Z","caller":"server.go:2286","message":"Request completed"}
+{"level":"info","signal":"interrupt","time":"2026-02-18T09:30:35Z","caller":"asm_amd64.s:1771","message":"Received shutdown signal"}
+{"level":"info","time":"2026-02-18T09:30:35Z","caller":"shutdown.go:112","message":"Starting graceful shutdown..."}
+{"level":"info","time":"2026-02-18T09:30:35Z","caller":"shutdown.go:146","message":"Closing database connection..."}
+{"level":"info","time":"2026-02-18T09:30:35Z","caller":"main.go:47","message":"Database connection closed successfully"}
+{"level":"info","time":"2026-02-18T09:30:35Z","caller":"shutdown.go:112","message":"Graceful shutdown completed successfully"}
