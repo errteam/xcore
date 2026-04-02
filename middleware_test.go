@@ -111,7 +111,7 @@ func TestCompression_Middleware_NoGzip(t *testing.T) {
 	c := NewCompression(gzip.DefaultCompression)
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello"))
+		_, _ = w.Write([]byte("hello"))
 	})
 
 	w := httptest.NewRecorder()

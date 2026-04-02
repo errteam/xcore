@@ -54,7 +54,7 @@ func (r *Recovery) Middleware(next http.Handler) http.Handler {
 				}
 
 				resp := ServiceUnavailable("Service temporarily unavailable")
-				resp.Write(w)
+				_ = resp.Write(w)
 			}
 		}()
 		next.ServeHTTP(w, req)
@@ -164,7 +164,7 @@ func (p *BodyParser) Middleware(next http.Handler) http.Handler {
 			if strings.Contains(r.Header.Get("Content-Type"), "application/json") {
 				if r.ContentLength > p.maxSize {
 					resp := BadRequest("Request body too large")
-					resp.Write(w)
+					_ = resp.Write(w)
 					return
 				}
 
@@ -220,7 +220,7 @@ func (t *Timeout) Middleware(next http.Handler) http.Handler {
 			tw.mu.Unlock()
 			if !written {
 				resp := ServiceUnavailable("Request timeout")
-				resp.Write(w)
+				_ = resp.Write(w)
 			}
 			<-done
 		}

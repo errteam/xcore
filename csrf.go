@@ -159,7 +159,7 @@ func (c *CSRF) setTokenCookie(w http.ResponseWriter, r *http.Request) {
 
 func (c *CSRF) generateToken() string {
 	b := make([]byte, c.config.TokenLength)
-	rand.Read(b)
+	_, _ = rand.Read(b)
 	return base64.URLEncoding.EncodeToString(b)
 }
 
@@ -177,6 +177,6 @@ func (c *CSRF) TokenGenerator() http.HandlerFunc {
 			Expires:  time.Now().Add(c.config.ExpireDuration),
 		})
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"token":"` + token + `"}`))
+		_, _ = w.Write([]byte(`{"token":"` + token + `"}`))
 	}
 }

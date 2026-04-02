@@ -334,9 +334,9 @@ func (r *Router) handleWithError(w http.ResponseWriter, req *http.Request, handl
 	c.logger = r.logger
 	if err := handler(c); err != nil {
 		if r.errorHandler != nil {
-			r.errorHandler.HandleError(c, err)
+			_ = r.errorHandler.HandleError(c, err)
 		} else {
-			NewErrorHandler(r.logger).HandleError(c, err)
+			_ = NewErrorHandler(r.logger).HandleError(c, err)
 		}
 	}
 }

@@ -260,7 +260,7 @@ func (m *MetricsMiddleware) serveMetrics(w http.ResponseWriter, r *http.Request)
 	sb.WriteString("# TYPE ws_connections gauge\n")
 	sb.WriteString(fmt.Sprintf("ws_connections %d\n", wsConnections.GetValue()))
 
-	w.Write([]byte(sb.String()))
+	_, _ = w.Write([]byte(sb.String()))
 }
 
 func RecordDBQuery(query string, duration time.Duration) {
@@ -353,5 +353,5 @@ func (p *PrometheusExporter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		sb.WriteString("\n")
 	}
 
-	w.Write([]byte(sb.String()))
+	_, _ = w.Write([]byte(sb.String()))
 }

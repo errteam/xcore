@@ -113,7 +113,7 @@ func (r *RateLimiter) Middleware(next http.Handler) http.Handler {
 		if !allowed {
 			w.Header().Set("Retry-After", strconv.FormatInt(resetTime.Unix()-time.Now().Unix(), 10))
 			resp := TooManyRequests("Rate limit exceeded")
-			resp.Write(w)
+			_ = resp.Write(w)
 			return
 		}
 		next.ServeHTTP(w, req)
