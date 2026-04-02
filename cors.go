@@ -69,7 +69,7 @@ func (m *CORSMiddleware) Handler(next http.Handler) http.Handler {
 		origin := r.Header.Get("Origin")
 		allowed := false
 
-		if m.config.AllowedOrigins != nil && len(m.config.AllowedOrigins) > 0 {
+		if len(m.config.AllowedOrigins) > 0 {
 			for _, o := range m.config.AllowedOrigins {
 				if o == "*" {
 					allowed = true
@@ -108,7 +108,7 @@ func (m *CORSMiddleware) Handler(next http.Handler) http.Handler {
 				w.Header().Set("Access-Control-Allow-Credentials", "true")
 			}
 
-			if m.config.ExposedHeaders != nil && len(m.config.ExposedHeaders) > 0 {
+			if len(m.config.ExposedHeaders) > 0 {
 				w.Header().Set("Access-Control-Expose-Headers", strings.Join(m.config.ExposedHeaders, ", "))
 			}
 		}

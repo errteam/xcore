@@ -27,7 +27,6 @@ type Database struct {
 	*gorm.DB
 	config *DatabaseConfig
 	logger *Logger
-	mu     sync.RWMutex
 }
 
 // DBHealth represents the health status of a database connection.

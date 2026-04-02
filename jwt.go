@@ -123,7 +123,11 @@ func (c *JWTConfig) WithRSAPublicKey(pemData []byte) (*JWTConfig, error) {
 		return nil, fmt.Errorf("failed to parse public key: %w", err)
 	}
 
-	c.VerifyKey = key.(*rsa.PublicKey)
+	pubKey, ok := key.(*rsa.PublicKey)
+	if !ok {
+		return nil, errors.New("invalid key type: expected RSA public key")
+	}
+	c.VerifyKey = pubKey
 	return c, nil
 }
 
@@ -406,7 +410,7 @@ func (m *JWTMiddleware) ClearTokenCookie(w http.ResponseWriter) {
 // unauthorized sends a 401 Unauthorized response with a default message.
 func (m *JWTMiddleware) unauthorized(w http.ResponseWriter) {
 	resp := Unauthorized("Invalid or missing token")
-	resp.Write(w)
+	_ = resp.Write(w)
 }
 
 // JWTClaims represents the standard claims for JWT tokens.

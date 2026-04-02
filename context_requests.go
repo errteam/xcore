@@ -360,6 +360,8 @@ func (c *Context) BindURI(v interface{}) error {
 }
 
 // Set stores a value in the request context.
+// The key parameter is intentionally a string for user convenience.
+// Users should avoid using keys that could collide with framework keys (RequestIDKey, RealIPKey, UserIDKey).
 func (c *Context) Set(key string, value interface{}) {
 	c.Request = c.Request.WithContext(context.WithValue(c.Request.Context(), key, value))
 }

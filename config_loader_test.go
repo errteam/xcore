@@ -166,7 +166,7 @@ func TestLoadConfigFromFiles_ValidFile(t *testing.T) {
 	}
 	defer os.Remove(tmpFile.Name())
 
-	tmpFile.WriteString(`
+	_, err = tmpFile.WriteString(`
 server:
   port: 8080
   host: "localhost"
@@ -174,6 +174,9 @@ database:
   host: "db.local"
   port: 5432
 `)
+	if err != nil {
+		t.Skipf("could not write to temp file: %v", err)
+	}
 	tmpFile.Close()
 
 	var cfg testConfig

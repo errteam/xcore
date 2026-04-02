@@ -180,9 +180,6 @@ func (p *BodyParser) Middleware(next http.Handler) http.Handler {
 // Uses context timeout and ensures the handler goroutine completes before returning.
 type Timeout struct {
 	timeout time.Duration
-	handler http.Handler
-	written bool
-	mu      sync.Mutex
 }
 
 // NewTimeout creates a new Timeout middleware with the specified duration.

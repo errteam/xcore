@@ -54,7 +54,7 @@ func (c *FileCache) Get(ctx context.Context, key string) (interface{}, error) {
 	}
 
 	if time.Now().After(item.expiration) {
-		c.Delete(ctx, key)
+		_ = c.Delete(ctx, key)
 		return nil, fmt.Errorf("key expired: %s", key)
 	}
 

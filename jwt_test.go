@@ -151,7 +151,7 @@ func TestJWTMiddleware_GenerateToken_CustomExpiration(t *testing.T) {
 	parsedClaims := parsedToken.Claims.(*JWTClaims)
 
 	expiresAt := parsedClaims.ExpiresAt.Time
-	if expiresAt.Sub(time.Now()) > 1*time.Hour+time.Minute {
+	if time.Until(expiresAt) > 1*time.Hour+time.Minute {
 		t.Error("token expiration too far in future")
 	}
 }

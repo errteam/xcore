@@ -101,9 +101,7 @@ func (c *RedisCache) MGet(ctx context.Context, keys ...string) ([]interface{}, e
 		return nil, err
 	}
 	interfaceResults := make([]interface{}, len(results))
-	for i, v := range results {
-		interfaceResults[i] = v
-	}
+	copy(interfaceResults, results)
 	return interfaceResults, nil
 }
 

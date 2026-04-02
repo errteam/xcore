@@ -37,14 +37,13 @@ type WSMessage struct {
 type WSAuthFunc func(r *http.Request) (bool, string)
 
 type WSConnection struct {
-	conn      *websocket.Conn
-	send      chan []byte
-	ws        *WebSocket
-	done      chan struct{}
-	mu        sync.Mutex
-	id        string
-	rooms     map[string]bool
-	userAgent string
+	conn  *websocket.Conn
+	send  chan []byte
+	ws    *WebSocket
+	done  chan struct{}
+	mu    sync.Mutex
+	id    string
+	rooms map[string]bool
 }
 
 func NewWSConnection(conn *websocket.Conn, ws *WebSocket, id string) *WSConnection {

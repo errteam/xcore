@@ -11,18 +11,21 @@ xcore is a production-ready Go framework for building applications. It combines 
 ## Features
 
 ### Built-in HTTP Server
+
 - RESTful routing with gorilla/mux
 - Route groups and middleware composition
 - Static file serving with fallbacks
 - Context-based handlers with automatic error handling
 
 ### WebSocket
+
 - Real-time bidirectional communication
 - Room-based messaging for broadcasting
 - Connection management with ping/pong
 - JSON message encoding support
 
 ### Middleware
+
 - Recovery (panic recovery)
 - Request ID tracking
 - Gzip compression
@@ -34,12 +37,14 @@ xcore is a production-ready Go framework for building applications. It combines 
 - Rate limiting (global and per-IP)
 
 ### Authentication & Security
+
 - JWT authentication (HS256, HS384, HS512, RS256, RS384, RS512)
 - CSRF protection
 - Session management (in-memory, custom stores)
 - Security headers middleware
 
 ### Data & Storage
+
 - Database: GORM with PostgreSQL, MySQL, SQLite, SQL Server support
 - Connection pooling with configurable limits
 - Transaction support
@@ -47,11 +52,13 @@ xcore is a production-ready Go framework for building applications. It combines 
 - Cache tagging for grouped invalidation
 
 ### Background Processing
+
 - Cron job scheduler with panic recovery
 - Custom services with auto start/stop
 - Graceful shutdown coordination
 
 ### Logging & Monitoring
+
 - Structured logging with zerolog (JSON/console)
 - Request logging middleware
 - Error file logging
@@ -59,12 +66,14 @@ xcore is a production-ready Go framework for building applications. It combines 
 - Health checks with component status
 
 ### Error Handling
+
 - Structured error types with codes
 - HTTP status mapping
 - Validation error support
 - Error middleware for automatic handling
 
 ### Graceful Shutdown
+
 - Signal handling (SIGINT, SIGTERM)
 - Coordinated shutdown of all components
 - Configurable timeouts for callbacks and servers
@@ -113,7 +122,7 @@ package main
 import (
     "log"
     "net/http"
-    
+
     "github.com/errteam/xcore"
 )
 
@@ -124,17 +133,17 @@ func main() {
         WithDatabase(&xcore.DatabaseConfig{Driver: "sqlite", DBName: "app.db"}).
         WithCache(&xcore.CacheConfig{Driver: "memory"}).
         WithGraceful(&xcore.GracefulConfig{Timeout: 30})
-    
+
     // Register routes
     app.Router().GetHandler("/hello", func(c *xcore.Context) error {
         return c.JSONSuccess(map[string]string{"message": "Hello, World!"})
     })
-    
+
     // Health check
     app.Router().GetHandler("/health", func(c *xcore.Context) error {
         return c.JSONSuccess(app.HealthCheck())
     })
-    
+
     // Run the application
     if err := app.Run(); err != nil {
         log.Fatal(err)
@@ -463,19 +472,19 @@ app := xcore.New().WithWebSocket(wsConfig)
 // Handler
 app.Router().GetHandler("/ws", func(c *xcore.Context) error {
     conn := c.Request.Context().Value("ws_conn").(*xcore.WSConnection)
-    
+
     // Read message
     msg := conn.ReadMessage()
-    
+
     // Write message
     conn.WriteMessage(&xcore.WSMessage{
         Type:    xcore.WSMessageText,
         Payload: []byte("Hello"),
     })
-    
+
     // Broadcast to room
     conn.BroadcastToRoom("room1", &xcore.WSMessage{...})
-    
+
     return nil
 })
 
@@ -565,19 +574,19 @@ store := xcore.NewMemorySessionStore(30 * time.Minute)
 // Use in handler
 app.Router().PostHandler("/login", func(c *xcore.Context) error {
     // Authenticate...
-    
+
     // Create session
     session, _ := store.Create(c.Context())
     session.Values["user_id"] = userID
     store.Set(c.Context(), session)
-    
+
     // Set cookie
     c.SetCookie(&http.Cookie{
         Name:     "session_id",
         Value:    session.ID,
         HttpOnly: true,
     })
-    
+
     return c.JSONSuccess(map[string]string{"status": "logged in"})
 })
 ```
@@ -865,7 +874,7 @@ myapp/
 
 ## Version
 
-Current version: 1.0.0
+Current version: 0.1.1
 
 ## Roadmap
 
