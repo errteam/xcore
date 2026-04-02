@@ -218,7 +218,10 @@ func (t *Timeout) Middleware(next http.Handler) http.Handler {
 		case <-tw.done:
 			return
 		case <-ctx.Done():
-			if !tw.written {
+			tw.mu.Lock()
+			written := tw.written
+			tw.mu.Unlock()
+			if !written {
 				resp := ServiceUnavailable("Request timeout")
 				resp.Write(w)
 			}

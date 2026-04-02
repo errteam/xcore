@@ -3,7 +3,6 @@ package xcore
 import (
 	"net/http"
 	"os"
-	"sync"
 	"testing"
 	"time"
 )
@@ -130,13 +129,7 @@ func TestGraceful_AddWebSocket(t *testing.T) {
 
 func TestGraceful_Wait(t *testing.T) {
 	g := NewGraceful(10, nil)
-
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		g.Wait()
-		wg.Done()
-	}()
+	g.StartForTest()
 
 	g.wg.Add(1)
 	go func() {
@@ -146,7 +139,6 @@ func TestGraceful_Wait(t *testing.T) {
 
 	g.Shutdown()
 
-	// Wait should complete without hanging
 	done := make(chan struct{})
 	go func() {
 		g.Wait()
@@ -155,7 +147,6 @@ func TestGraceful_Wait(t *testing.T) {
 
 	select {
 	case <-done:
-		// Success
 	case <-time.After(2 * time.Second):
 		t.Error("Wait() timed out")
 	}

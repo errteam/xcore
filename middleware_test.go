@@ -209,7 +209,6 @@ func TestTimeout_Middleware_Timeout(t *testing.T) {
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(200 * time.Millisecond)
-		w.WriteHeader(http.StatusOK)
 	})
 
 	w := httptest.NewRecorder()
