@@ -1,21 +1,32 @@
+// Package xcore provides service management for the xcore framework.
+//
+// This package defines the Service interface and ServiceManager for managing
+// application services. Services are components that can be started and stopped
+// as part of the application lifecycle.
 package xcore
 
+// Service defines the interface for application services.
+// Implement this interface to create custom services that can be managed by the framework.
 type Service interface {
 	Start() error
 	Stop() error
 	Name() string
 }
 
+// serviceWrapper wraps a Service with its logger for internal tracking.
 type serviceWrapper struct {
 	service Service
 	logger  *Logger
 }
 
+// ServiceManager manages the lifecycle of application services.
+// It starts services in order and stops them in reverse order during shutdown.
 type ServiceManager struct {
 	services []serviceWrapper
 	logger   *Logger
 }
 
+// NewServiceManager creates a new ServiceManager with an optional logger.
 func NewServiceManager(logger *Logger) *ServiceManager {
 	return &ServiceManager{
 		services: make([]serviceWrapper, 0),
@@ -23,6 +34,8 @@ func NewServiceManager(logger *Logger) *ServiceManager {
 	}
 }
 
+// Add registers a service with the service manager.
+// The service will be started when StartAll is called.
 func (sm *ServiceManager) Add(service Service) {
 	sm.services = append(sm.services, serviceWrapper{
 		service: service,
@@ -33,6 +46,8 @@ func (sm *ServiceManager) Add(service Service) {
 	}
 }
 
+// StartAll starts all registered services in order.
+// Returns an error if any service fails to start.
 func (sm *ServiceManager) StartAll() error {
 	for _, s := range sm.services {
 		if sm.logger != nil {
@@ -51,6 +66,8 @@ func (sm *ServiceManager) StartAll() error {
 	return nil
 }
 
+// StopAll stops all registered services in reverse order.
+// Logs errors but continues stopping remaining services.
 func (sm *ServiceManager) StopAll() {
 	for i := len(sm.services) - 1; i >= 0; i-- {
 		s := sm.services[i]
@@ -69,10 +86,12 @@ func (sm *ServiceManager) StopAll() {
 	}
 }
 
+// Count returns the number of registered services.
 func (sm *ServiceManager) Count() int {
 	return len(sm.services)
 }
 
+// Services returns a slice of all registered services.
 func (sm *ServiceManager) Services() []Service {
 	services := make([]Service, len(sm.services))
 	for i, s := range sm.services {

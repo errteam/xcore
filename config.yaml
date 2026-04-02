@@ -48,6 +48,8 @@ websocket:
   ping_interval: 30
   pong_timeout: 10
   max_message_size: 4096
+  allowed_origins:
+    - "*"
 
 graceful:
   timeout: 30

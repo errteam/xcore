@@ -1,3 +1,7 @@
+// Package xcore provides health check functionality.
+//
+// This package provides health check endpoints for monitoring
+// the status of the application and its dependencies.
 package xcore
 
 import (
@@ -8,12 +12,14 @@ import (
 	"time"
 )
 
+// HealthStatus represents the overall health status of the application.
 type HealthStatus struct {
 	Status     string                     `json:"status"`
 	Timestamp  time.Time                  `json:"timestamp"`
 	Components map[string]ComponentHealth `json:"components,omitempty"`
 }
 
+// ComponentHealth represents the health status of a specific component.
 type ComponentHealth struct {
 	Status  string `json:"status"`
 	Message string `json:"message,omitempty"`

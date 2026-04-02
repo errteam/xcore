@@ -7,7 +7,7 @@ package xcore
 //
 //   - HTTP Server: gorilla/mux router with WebSocket support
 //   - Database: GORM wrapper with multiple driver support
-//   - Cache: Memory, File, and Redis (coming soon) backends
+//   - Cache: Memory, File, and Redis backends
 //   - Logger: zerolog wrapper with JSON/console output
 //   - Cron: Job scheduler with graceful shutdown
 //   - Services: Custom background services with auto start/stop

@@ -1,3 +1,7 @@
+// Package xcore provides security headers and helpers.
+//
+// This package provides security-related utilities including
+// security headers for HTTP responses and helper functions.
 package xcore
 
 import (
@@ -6,6 +10,8 @@ import (
 	"strings"
 )
 
+// SecurityHeaders defines security headers for HTTP responses.
+// These headers help protect against common web vulnerabilities.
 type SecurityHeaders struct {
 	ContentTypeNosniff      string
 	XFrameOptions           string

@@ -1,3 +1,7 @@
+// Package xcore provides Redis cache implementation.
+//
+// This package implements a cache backed by Redis for distributed
+// caching across multiple application instances.
 package xcore
 
 import (
@@ -8,10 +12,12 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+// RedisCache is a cache implementation backed by Redis.
 type RedisCache struct {
 	client *redis.Client
 }
 
+// NewRedisCache creates a new Redis cache with the given configuration.
 func NewRedisCache(cfg *CacheConfig) (*RedisCache, error) {
 	opts := &redis.Options{
 		Addr:     cfg.RedisAddr,

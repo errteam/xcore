@@ -1,6 +1,12 @@
+// Package xcore provides WebSocket support using gorilla/websocket.
+//
+// This package enables real-time bidirectional communication between
+// the server and clients. It supports message broadcasting, room-based
+// messaging, and connection management.
 package xcore
 
 import (
+	"crypto/rand"
 	"encoding/json"
 	"net/http"
 	"sync"
@@ -9,8 +15,10 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// WSMessageType represents the type of WebSocket message.
 type WSMessageType int
 
+// WebSocket message types.
 const (
 	WSMessageText   WSMessageType = 1
 	WSMessageBinary WSMessageType = 2
@@ -19,6 +27,7 @@ const (
 	WSMessagePong   WSMessageType = 5
 )
 
+// WSMessage represents a WebSocket message structure.
 type WSMessage struct {
 	Type    WSMessageType `json:"type"`
 	Payload []byte        `json:"payload"`
@@ -297,17 +306,35 @@ func NewWebSocket(cfg *WebsocketConfig, logger *Logger) *WebSocket {
 			PingInterval:    30,
 			PongTimeout:     10,
 			MaxMessageSize:  4096,
+			AllowedOrigins:  []string{"*"},
 		}
 	}
 
 	hub := newHub()
 	go hub.run()
 
+	allowedOrigins := cfg.AllowedOrigins
+	if allowedOrigins == nil {
+		allowedOrigins = []string{"*"}
+	}
+
 	upgrader := websocket.Upgrader{
 		ReadBufferSize:  cfg.ReadBufferSize,
 		WriteBufferSize: cfg.WriteBufferSize,
 		CheckOrigin: func(r *http.Request) bool {
-			return true
+			origin := r.Header.Get("Origin")
+			if origin == "" {
+				return true
+			}
+			for _, allowed := range allowedOrigins {
+				if allowed == "*" {
+					return true
+				}
+				if allowed == origin {
+					return true
+				}
+			}
+			return false
 		},
 	}
 
@@ -444,10 +471,14 @@ func generateWSID() string {
 func randomString(n int) string {
 	const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	b := make([]byte, n)
-	seed := time.Now().UnixNano()
+	if _, err := rand.Read(b); err != nil {
+		for i := range b {
+			b[i] = letters[time.Now().UnixNano()%int64(len(letters))]
+		}
+		return string(b)
+	}
 	for i := range b {
-		seed = (seed*1103515245 + 12345) & 0x7fffffff
-		b[i] = letters[seed%int64(len(letters))]
+		b[i] = letters[int(b[i])%len(letters)]
 	}
 	return string(b)
 }

@@ -1,3 +1,7 @@
+// Package xcore provides cron job scheduling functionality.
+//
+// This package wraps the robfig/cron library to provide a simple interface
+// for scheduling recurring tasks in the application.
 package xcore
 
 import (
@@ -7,6 +11,7 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
+// CronJob represents a scheduled cron job.
 type CronJob struct {
 	Name  string
 	Spec  string
@@ -15,6 +20,8 @@ type CronJob struct {
 	cron  *Cron
 }
 
+// Cron is a job scheduler for running recurring tasks.
+// It supports panic recovery and configurable timezones.
 type Cron struct {
 	cron       *cron.Cron
 	logger     *Logger
@@ -22,6 +29,8 @@ type Cron struct {
 	recoverPan bool
 }
 
+// NewCron creates a new Cron scheduler with the given configuration.
+// If cfg is nil, default configuration is used (UTC timezone, panic recovery enabled).
 func NewCron(cfg *CronConfig, logger *Logger) *Cron {
 	recoverPan := true
 	if cfg != nil && !cfg.RecoverPan {
@@ -45,6 +54,9 @@ func NewCron(cfg *CronConfig, logger *Logger) *Cron {
 	}
 }
 
+// AddJob adds a new cron job with the given name, spec, and function.
+// The spec is a cron expression (e.g., "0 0 * * *" for daily at midnight).
+// Returns the CronJob and any error.
 func (c *Cron) AddJob(name, spec string, fn func() error) (*CronJob, error) {
 	job := &CronJob{
 		Name: name,
@@ -96,15 +108,18 @@ func (c *Cron) AddJob(name, spec string, fn func() error) (*CronJob, error) {
 	return job, nil
 }
 
+// AddFunc is an alias for AddJob.
 func (c *Cron) AddFunc(name, spec string, fn func() error) (*CronJob, error) {
 	return c.AddJob(name, spec, fn)
 }
 
+// Remove removes a cron job by its ID.
 func (c *Cron) Remove(id cron.EntryID) {
 	c.cron.Remove(id)
 	delete(c.jobs, id)
 }
 
+// Start starts the cron scheduler. Jobs begin running according to their schedules.
 func (c *Cron) Start() {
 	c.cron.Start()
 	if c.logger != nil {
@@ -112,6 +127,8 @@ func (c *Cron) Start() {
 	}
 }
 
+// Stop stops the cron scheduler gracefully.
+// Waits for running jobs to complete.
 func (c *Cron) Stop() {
 	ctx := c.cron.Stop()
 	<-ctx.Done()
@@ -120,14 +137,17 @@ func (c *Cron) Stop() {
 	}
 }
 
+// Entries returns all registered cron job entries.
 func (c *Cron) Entries() []cron.Entry {
 	return c.cron.Entries()
 }
 
+// Run triggers all jobs to run immediately (for testing purposes).
 func (c *Cron) Run() {
 	c.cron.Run()
 }
 
+// ListJobs returns all registered CronJob objects.
 func (c *Cron) ListJobs() []*CronJob {
 	jobs := make([]*CronJob, 0, len(c.jobs))
 	for _, job := range c.jobs {

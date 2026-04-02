@@ -1,3 +1,7 @@
+// Package xcore provides session management functionality.
+//
+// This package provides session storage with support for custom stores.
+// It includes memory-based session storage and cookie-based session IDs.
 package xcore
 
 import (
@@ -11,12 +15,14 @@ import (
 	"time"
 )
 
+// SessionStore defines the interface for session storage implementations.
 type SessionStore interface {
 	Get(ctx context.Context, id string) (*Session, error)
 	Set(ctx context.Context, session *Session) error
 	Delete(ctx context.Context, id string) error
 }
 
+// Session represents a user session with data and expiration.
 type Session struct {
 	ID        string
 	Values    map[string]interface{}

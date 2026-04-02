@@ -1,3 +1,7 @@
+// Package xcore provides request logging utilities.
+//
+// This package provides middleware for logging HTTP request bodies
+// and response data for debugging and audit purposes.
 package xcore
 
 import (
@@ -7,11 +11,14 @@ import (
 	"time"
 )
 
+// RequestBodyLogger logs HTTP request bodies.
 type RequestBodyLogger struct {
 	logger   *Logger
 	maxBytes int64
 }
 
+// NewRequestBodyLogger creates a new RequestBodyLogger.
+// Logs up to maxBytes (default 1MB) of request body.
 func NewRequestBodyLogger(logger *Logger) *RequestBodyLogger {
 	return &RequestBodyLogger{
 		logger:   logger,

@@ -1,3 +1,10 @@
+// Package xcore provides caching functionality for the xcore framework.
+//
+// This package defines the Cache interface and provides implementations for
+// different cache backends. Supported drivers: memory, file, redis.
+//
+// The cache interface supports standard operations: Get, Set, Delete, Clear,
+// Exists, Keys, TTL, MGet, MSet. It also supports tagging for cache invalidation.
 package xcore
 
 import (
@@ -6,6 +13,8 @@ import (
 	"time"
 )
 
+// Cache defines the interface for caching operations.
+// Implementations can be in-memory, file-based, or distributed (e.g., Redis).
 type Cache interface {
 	Get(ctx context.Context, key string) (interface{}, error)
 	Set(ctx context.Context, key string, value interface{}, ttl time.Duration) error
@@ -20,6 +29,8 @@ type Cache interface {
 	Tags() CacheTags
 }
 
+// CacheTags defines the interface for cache tagging operations.
+// Tags allow grouping related cache keys and invalidating them together.
 type CacheTags interface {
 	SetTags(ctx context.Context, key string, tags ...string) error
 	GetTags(ctx context.Context, key string) ([]string, error)
@@ -27,9 +38,19 @@ type CacheTags interface {
 	InvalidateByTags(ctx context.Context, tags ...string) error
 }
 
-var ErrKeyNotFound = fmt.Errorf("key not found")
-var ErrKeyExpired = fmt.Errorf("key expired")
+// Cache errors.
+var (
+	ErrKeyNotFound = fmt.Errorf("key not found")
+	ErrKeyExpired  = fmt.Errorf("key expired")
+)
 
+// NewCache creates a new Cache instance based on the configuration.
+// If cfg is nil, defaults to memory cache with 60-second cleanup interval.
+//
+// Supported drivers:
+//   - "memory": In-memory cache with TTL support
+//   - "file": File-based cache
+//   - "redis": Redis cache (requires valid config)
 func NewCache(cfg *CacheConfig) (Cache, error) {
 	if cfg == nil {
 		return NewMemoryCache(60), nil

@@ -1,3 +1,10 @@
+// Package xcore provides rate limiting functionality for the xcore framework.
+//
+// This package implements token bucket rate limiting for HTTP requests.
+// It supports both global rate limiting and per-IP rate limiting.
+//
+// Rate limiting headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset)
+// are automatically added to responses. When rate limit is exceeded, a 429 response is returned.
 package xcore
 
 import (
@@ -7,6 +14,9 @@ import (
 	"time"
 )
 
+// RateLimiter implements token bucket rate limiting.
+// It can operate in global mode (single bucket for all requests) or per-IP mode
+// (separate bucket for each client IP).
 type RateLimiter struct {
 	requestsPerSecond int
 	burst             int
@@ -20,11 +30,15 @@ type RateLimiter struct {
 	stopCleanup       chan struct{}
 }
 
+// ipLimiter tracks token bucket state for a single IP address.
 type ipLimiter struct {
 	tokens   float64
 	lastTime time.Time
 }
 
+// NewRateLimiter creates a new RateLimiter with the specified requests per second and burst.
+// Default values are used if rps <= 0 (100) or burst <= 0 (100).
+// Use EnablePerIP() to switch to per-IP rate limiting.
 func NewRateLimiter(requestsPerSecond, burst int) *RateLimiter {
 	if requestsPerSecond <= 0 {
 		requestsPerSecond = 100
@@ -43,12 +57,18 @@ func NewRateLimiter(requestsPerSecond, burst int) *RateLimiter {
 	}
 }
 
+// EnablePerIP enables per-IP rate limiting.
+// Each client IP gets its own token bucket.
+// Returns the RateLimiter for method chaining.
+// Background goroutine starts to clean up stale IP entries (older than 10 minutes).
 func (r *RateLimiter) EnablePerIP() *RateLimiter {
 	r.perIP = true
 	go r.cleanup()
 	return r
 }
 
+// Stop stops the background cleanup goroutine for per-IP rate limiting.
+// Call this when shutting down the server.
 func (r *RateLimiter) Stop() {
 	if r.perIP {
 		select {
@@ -58,12 +78,17 @@ func (r *RateLimiter) Stop() {
 	}
 }
 
+// Reset clears all per-IP rate limit data.
+// This is useful for testing or manually resetting the rate limiter.
 func (r *RateLimiter) Reset() {
 	r.ipMu.Lock()
 	defer r.ipMu.Unlock()
 	r.ips = make(map[string]*ipLimiter)
 }
 
+// Middleware returns an http.Handler that enforces rate limiting.
+// Adds rate limit headers to responses: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset.
+// Returns 429 Too Many Requests when rate limit is exceeded.
 func (r *RateLimiter) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		var allowed bool
@@ -95,6 +120,8 @@ func (r *RateLimiter) Middleware(next http.Handler) http.Handler {
 	})
 }
 
+// allow checks if a request is allowed under global rate limiting.
+// Uses token bucket algorithm with refill based on requestsPerSecond.
 func (r *RateLimiter) allow() bool {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -116,6 +143,8 @@ func (r *RateLimiter) allow() bool {
 	return true
 }
 
+// allowWithInfo checks if a request is allowed and returns additional rate limit info.
+// Returns: allowed (bool), remaining tokens (int), reset time (time.Time).
 func (r *RateLimiter) allowWithInfo() (bool, int, time.Time) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -141,6 +170,8 @@ func (r *RateLimiter) allowWithInfo() (bool, int, time.Time) {
 	return true, remaining, resetTime
 }
 
+// allowIPWithInfo checks if a request from a specific IP is allowed.
+// Creates a new bucket for new IPs. Returns: allowed (bool), remaining tokens (int), reset time (time.Time).
 func (r *RateLimiter) allowIPWithInfo(ip string) (bool, int, time.Time) {
 	r.ipMu.Lock()
 	defer r.ipMu.Unlock()
@@ -175,6 +206,9 @@ func (r *RateLimiter) allowIPWithInfo(ip string) (bool, int, time.Time) {
 	return true, remaining, resetTime
 }
 
+// cleanup runs periodically to remove stale IP entries.
+// Removes IPs that haven't been seen in more than 10 minutes.
+// This prevents memory growth from long-running servers.
 func (r *RateLimiter) cleanup() {
 	ticker := time.NewTicker(r.cleanupInterval)
 	defer ticker.Stop()

@@ -1,3 +1,7 @@
+// Package xcore provides metrics collection functionality.
+//
+// This package provides basic metrics collection including counters and histograms.
+// It can be extended to integrate with Prometheus or other monitoring systems.
 package xcore
 
 import (
@@ -8,6 +12,7 @@ import (
 	"time"
 )
 
+// MetricsConfig defines configuration for metrics collection.
 type MetricsConfig struct {
 	Path             string
 	EnableAPIMetrics bool
@@ -15,6 +20,7 @@ type MetricsConfig struct {
 	Buckets          []float64
 }
 
+// NewMetricsConfig creates a default MetricsConfig.
 func NewMetricsConfig() *MetricsConfig {
 	return &MetricsConfig{
 		Path:             "/metrics",

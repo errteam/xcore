@@ -1,3 +1,7 @@
+// Package xcore provides CSRF (Cross-Site Request Forgery) protection.
+//
+// This package provides CSRF token generation and validation middleware
+// to protect against CSRF attacks in web applications.
 package xcore
 
 import (
@@ -8,6 +12,7 @@ import (
 	"time"
 )
 
+// CSRFConfig defines configuration for CSRF protection.
 type CSRFConfig struct {
 	TokenLength    int
 	TokenName      string

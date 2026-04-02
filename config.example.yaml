@@ -1,0 +1,361 @@
+# =============================================================================
+# xcore Framework Configuration Example
+# =============================================================================
+# This file contains all available configuration options for the xcore framework.
+# Copy this file to config.yaml (or config.yml) and modify as needed.
+#
+# For environment variables, use the prefix XCORE_ and uppercase keys.
+# Example: XCORE_HTTP_PORT=8080
+# =============================================================================
+
+# =============================================================================
+# HTTP Server Configuration
+# =============================================================================
+http:
+  # Server host to bind to (default: "0.0.0.0")
+  host: "0.0.0.0"
+  
+  # Server port (default: 8080)
+  port: 8080
+  
+  # Read timeout in seconds - max time to read request (default: 30)
+  read_timeout: 30
+  
+  # Write timeout in seconds - max time to write response (default: 30)
+  write_timeout: 30
+  
+  # Idle timeout in seconds - max time for keep-alive connections (default: 60)
+  idle_timeout: 60
+  
+  # List of middleware to enable (available: cors, rate_limit, request_id, real_ip, compression, body_parser, timeout, logger, secure_headers)
+  # middlewares:
+  #   - cors
+  #   - rate_limit
+  #   - request_id
+  #   - compression
+  #   - logger
+  #   - secure_headers
+  
+  # CORS configuration (optional)
+  cors:
+    # List of allowed origins (use ["*"] for all)
+    allowed_origins:
+      - "http://localhost:3000"
+      - "https://example.com"
+    
+    # List of allowed HTTP methods
+    allowed_methods:
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "DELETE"
+      - "OPTIONS"
+      - "PATCH"
+    
+    # List of allowed HTTP headers
+    allowed_headers:
+      - "Content-Type"
+      - "Authorization"
+      - "X-Requested-With"
+      - "X-CSRF-Token"
+    
+    # Headers exposed to the browser
+    exposed_headers:
+      - "X-Total-Count"
+      - "X-Page-Count"
+    
+    # Allow credentials (cookies, auth headers) - cannot use "*" with this
+    allow_credentials: true
+    
+    # Max age in seconds for preflight cache (default: 0, no cache)
+    max_age: 3600
+    
+    # Enable CORS (default: true)
+    enabled: true
+  
+  # Rate limiting configuration (optional)
+  rate_limit:
+    # Requests per second (default: 100)
+    requests_per_second: 100
+    
+    # Burst capacity (default: 100)
+    burst: 100
+  
+  # Static file serving (optional)
+  # static_path: "/static"      # URL path for static files
+  # static_dir: "./public"     # Directory containing static files
+  
+  # Enable pprof endpoints for profiling (optional)
+  # enable_pprof: true          # Available at /debug/pprof/
+
+# =============================================================================
+# Logger Configuration
+# =============================================================================
+logger:
+  # Log level: debug, info, warn, error (default: "info")
+  level: "info"
+  
+  # Output mode: console, file, both (default: "console")
+  output: "console"
+  
+  # Format: console, json (default: "console")
+  format: "console"
+  
+  # Log file path (used when output is "file" or "both")
+  file_path: "./logs/app.log"
+  
+  # Max size in MB per log file (default: 10)
+  max_size: 10
+  
+  # Max age in days to keep log files (default: 30)
+  max_age: 30
+  
+  # Max number of backup files to keep (default: 3)
+  max_backups: 3
+  
+  # Compress old log files (default: true)
+  compress: true
+  
+  # Include caller information (default: false)
+  caller: false
+  
+  # Timestamp field name (default: "time")
+  # timestamp_field: "time"
+  
+  # Console-specific configuration (optional)
+  # console:
+  #   colorable: true
+
+# =============================================================================
+# Database Configuration
+# =============================================================================
+database:
+  # Database driver: sqlite, mysql, postgres, mssql (required)
+  driver: "sqlite"
+  
+  # Database host (default: "localhost")
+  host: "localhost"
+  
+  # Database port (default: 5432 for postgres, 3306 for mysql, 1433 for mssql)
+  port: 5432
+  
+  # Database username
+  user: "postgres"
+  
+  # Database password
+  password: ""
+  
+  # Database name
+  db_name: "app.db"
+  
+  # SSL mode (for postgres/mysql): disable, require, verify-ca, verify-full
+  ssl_mode: "disable"
+  
+  # Character set (for mysql)
+  charset: "utf8mb4"
+  
+  # Timezone
+  timezone: "UTC"
+  
+  # Maximum number of open connections (default: 25)
+  max_open_conns: 25
+  
+  # Maximum number of idle connections (default: 5)
+  max_idle_conns: 5
+  
+  # Connection max lifetime in seconds (default: 300)
+  conn_max_lifetime: 300
+  
+  # Connection max idle time in seconds (default: 60)
+  conn_max_idle_time: 60
+  
+  # Connection timeout in seconds (default: 10)
+  connect_timeout: 10
+  
+  # Query timeout in seconds (default: 30)
+  query_timeout: 30
+  
+  # Pool mode (for postgres): transaction, session
+  pool_mode: "transaction"
+  
+  # Connection name (for postgres)
+  connection_name: ""
+  
+  # GORM log level: silent, error, warn, info (default: "silent")
+  log_level: "silent"
+  
+  # Use custom logger (default: false)
+  custom_logger: false
+  
+  # Enable database (default: true)
+  enabled: true
+
+# =============================================================================
+# Cache Configuration
+# =============================================================================
+cache:
+  # Cache driver: memory, file, redis (default: "memory")
+  driver: "memory"
+  
+  # Redis connection (when driver is "redis")
+  redis_addr: "localhost:6379"
+  redis_password: ""           # Leave empty for no password
+  redis_db: 0                  # Redis database number (0-15)
+  redis_pool_size: 10          # Connection pool size
+  redis_tls: false             # Enable TLS for Redis
+  
+  # File cache path (when driver is "file")
+  file_path: "./cache"
+  
+  # Default TTL in seconds (default: 300)
+  ttl: 300
+  
+  # Cleanup interval in seconds (default: 60)
+  cleanup_interval: 60
+  
+  # Enable cache (default: true)
+  enabled: true
+
+# =============================================================================
+# Cron Job Configuration
+# =============================================================================
+cron:
+  # Timezone for cron jobs (default: "UTC")
+  timezone: "UTC"
+  
+  # Maximum number of concurrent jobs (default: 100)
+  max_jobs: 100
+  
+  # Enable panic recovery for jobs (default: true)
+  recover_pan: true
+
+# =============================================================================
+# WebSocket Configuration
+# =============================================================================
+websocket:
+  # Read buffer size in bytes (default: 1024)
+  read_buffer_size: 1024
+  
+  # Write buffer size in bytes (default: 1024)
+  write_buffer_size: 1024
+  
+  # Ping interval in seconds (default: 30)
+  ping_interval: 30
+  
+  # Pong timeout in seconds (default: 10)
+  pong_timeout: 10
+  
+  # Maximum message size in bytes (default: 4096)
+  max_message_size: 4096
+  
+  # Enable WebSocket (default: true)
+  enabled: true
+  
+  # Allowed origins for CORS (use ["*"] for all)
+  # IMPORTANT: For production, specify exact origins instead of "*"
+  allowed_origins:
+    - "*"
+
+# =============================================================================
+# Graceful Shutdown Configuration
+# =============================================================================
+graceful:
+  # Shutdown timeout in seconds (default: 30)
+  timeout: 30
+
+# =============================================================================
+# Metrics Configuration (optional)
+# =============================================================================
+# metrics:
+#   # Metrics endpoint path (default: "/metrics")
+#   path: "/metrics"
+#   
+#   # Enable API metrics collection (default: true)
+#   enable_api_metrics: true
+#   
+#   # Enable database metrics collection (default: true)
+#   enable_db_metrics: true
+#   
+#   # Histogram buckets for timing metrics
+#   buckets:
+#     - 0.005
+#     - 0.01
+#     - 0.025
+#     - 0.05
+#     - 0.1
+#     - 0.25
+#     - 0.5
+#     - 1
+#     - 2.5
+#     - 5
+#     - 10
+
+# =============================================================================
+# JWT Configuration (optional - set via code or middleware)
+# =============================================================================
+# jwt:
+#   # Secret key for signing tokens (required)
+#   secret: "your-secret-key-here"
+#   
+#   # Token expiry time in hours (default: 24)
+#   expiry: 24
+#   
+#   # Refresh token expiry time in hours (default: 168)
+#   refresh_expiry: 168
+#   
+#   # Token prefix in Authorization header (default: "Bearer")
+#   prefix: "Bearer"
+#   
+#   # Header name for token (default: "Authorization")
+#   header_name: "Authorization"
+#   
+#   # Context key for storing claims (default: "jwt_claims")
+#   context_key: "jwt_claims"
+#   
+#   # Cookie name for token (default: "token")
+#   cookie_name: "token"
+#   
+#   # Cookie path (default: "/")
+#   cookie_path: "/"
+#   
+#   # Cookie domain
+#   # cookie_domain: "example.com"
+#   
+#   # Use HTTP-only cookie (default: true)
+#   cookie_http_only: true
+#   
+#   # Cookie secure (default: true in production)
+#   cookie_secure: true
+
+# =============================================================================
+# Session Configuration (optional - set via code or middleware)
+# =============================================================================
+# session:
+#   # Session cookie name (default: "session_id")
+#   cookie_name: "session_id"
+#   
+#   # Session cookie path (default: "/")
+#   cookie_path: "/"
+#   
+#   # Session cookie domain
+#   # cookie_domain: "example.com"
+#   
+#   # Cookie HTTP-only (default: true)
+#   cookie_http_only: true
+#   
+#   # Cookie secure (default: true in production)
+#   cookie_secure: true
+#   
+#   # Session max age in seconds (default: 86400 = 24 hours)
+#   max_age: 86400
+#   
+#   # Session provider: memory, file, redis (default: "memory")
+#   provider: "memory"
+#   
+#   # Redis configuration (when provider is "redis")
+#   redis_addr: "localhost:6379"
+#   redis_password: ""
+#   redis_db: 1
+#   
+#   # File session path (when provider is "file")
+#   file_path: "./sessions"

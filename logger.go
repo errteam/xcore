@@ -1,3 +1,8 @@
+// Package xcore provides logging functionality for the xcore framework.
+//
+// This package wraps the zerolog library to provide structured logging with
+// support for multiple outputs (console, file, both), log levels, and formatting.
+// It also includes request logging middleware for HTTP servers.
 package xcore
 
 import (
@@ -11,6 +16,8 @@ import (
 	"github.com/rs/zerolog/pkgerrors"
 )
 
+// Logger provides a structured logging interface based on zerolog.
+// It supports different log levels, output destinations, and formatting options.
 type Logger struct {
 	logger      zerolog.Logger
 	output      string
@@ -19,8 +26,17 @@ type Logger struct {
 	errorLogger *zerolog.Logger
 }
 
+// defaultLogger is the global default logger used when no specific logger is configured.
 var defaultLogger *Logger
 
+// NewLogger creates a new Logger with the given configuration.
+// If cfg is nil, default configuration is used:
+//   - Level: "info"
+//   - Output: "console"
+//   - Format: "console"
+//
+// Supported output modes: "console", "file", "both"
+// Supported formats: "console" (human-readable), "json" (structured)
 func NewLogger(cfg *LoggerConfig) (*Logger, error) {
 	if cfg == nil {
 		cfg = &LoggerConfig{
@@ -90,6 +106,13 @@ func NewLogger(cfg *LoggerConfig) (*Logger, error) {
 	}, nil
 }
 
+// WithErrorFile adds a separate error log file with its own configuration.
+// The error log file captures only error-level logs.
+// Default values are used if any parameter is <= 0:
+//   - path: "./logs/error.log"
+//   - maxSize: 10 MB
+//   - maxAge: 30 days
+//   - maxBackups: 3
 func (l *Logger) WithErrorFile(path string, maxSize, maxAge, maxBackups int, compress bool) error {
 	if path == "" {
 		path = "./logs/error.log"
@@ -123,12 +146,15 @@ func (l *Logger) WithErrorFile(path string, maxSize, maxAge, maxBackups int, com
 	return nil
 }
 
+// newLoggerWithOutput creates a zerolog logger with a specific output and level.
 func newLoggerWithOutput(w io.Writer, level zerolog.Level) *zerolog.Logger {
 	logger := zerolog.New(w).With().Timestamp().Logger()
 	logger = logger.Level(level)
 	return &logger
 }
 
+// Error returns an event for logging error-level messages.
+// If an error logger is configured, logs to the error file.
 func (l *Logger) Error() *zerolog.Event {
 	if l.errorLogger != nil {
 		return l.errorLogger.Error()
@@ -136,34 +162,44 @@ func (l *Logger) Error() *zerolog.Event {
 	return l.logger.Error()
 }
 
+// Debug returns an event for logging debug-level messages.
 func (l *Logger) Debug() *zerolog.Event {
 	return l.logger.Debug()
 }
 
+// Info returns an event for logging info-level messages.
 func (l *Logger) Info() *zerolog.Event {
 	return l.logger.Info()
 }
 
+// Warn returns an event for logging warning-level messages.
 func (l *Logger) Warn() *zerolog.Event {
 	return l.logger.Warn()
 }
 
+// Fatal returns an event for logging fatal-level messages.
+// After logging, it calls os.Exit(1).
 func (l *Logger) Fatal() *zerolog.Event {
 	return l.logger.Fatal()
 }
 
+// Panic returns an event for logging panic-level messages.
+// After logging, it calls panic().
 func (l *Logger) Panic() *zerolog.Event {
 	return l.logger.Panic()
 }
 
+// Log returns a generic event for logging at any level.
 func (l *Logger) Log() *zerolog.Event {
 	return l.logger.Log()
 }
 
+// With returns a contextual logger with additional fields.
 func (l *Logger) With() zerolog.Context {
 	return l.logger.With()
 }
 
+// Output creates a new Logger with a different output writer.
 func (l *Logger) Output(w io.Writer) *Logger {
 	return &Logger{
 		logger: l.logger.Output(w),
@@ -173,6 +209,7 @@ func (l *Logger) Output(w io.Writer) *Logger {
 	}
 }
 
+// Level creates a new Logger with a different log level.
 func (l *Logger) Level(level string) *Logger {
 	lvl, _ := zerolog.ParseLevel(level)
 	return &Logger{
@@ -183,15 +220,20 @@ func (l *Logger) Level(level string) *Logger {
 	}
 }
 
+// Hook adds a hook to the logger for custom log processing.
 func (l *Logger) Hook(h zerolog.Hook) *Logger {
 	l.logger.Hook(h)
 	return l
 }
 
+// SetDefaultLogger sets the global default logger.
+// Used when accessing DefaultLogger() without creating a logger.
 func SetDefaultLogger(logger *Logger) {
 	defaultLogger = logger
 }
 
+// DefaultLogger returns the global default logger.
+// Creates one if not set.
 func DefaultLogger() *Logger {
 	if defaultLogger == nil {
 		logger, _ := NewLogger(nil)
@@ -200,18 +242,23 @@ func DefaultLogger() *Logger {
 	return defaultLogger
 }
 
+// LogLevel returns the current log level as a string.
 func (l *Logger) LogLevel() string {
 	return l.level
 }
 
+// RequestLogger is a middleware that logs HTTP requests.
+// It logs method, path, status code, duration, and client IP.
 type RequestLogger struct {
 	logger *Logger
 }
 
+// NewRequestLogger creates a new RequestLogger middleware.
 func NewRequestLogger(logger *Logger) *RequestLogger {
 	return &RequestLogger{logger: logger}
 }
 
+// Middleware returns an http.Handler that logs request details.
 func (l *RequestLogger) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
@@ -232,11 +279,13 @@ func (l *RequestLogger) Middleware(next http.Handler) http.Handler {
 	})
 }
 
+// statusWriter wraps http.ResponseWriter to capture the status code.
 type statusWriter struct {
 	http.ResponseWriter
 	status int
 }
 
+// WriteHeader captures the status code before writing headers.
 func (w *statusWriter) WriteHeader(status int) {
 	w.status = status
 	w.ResponseWriter.WriteHeader(status)

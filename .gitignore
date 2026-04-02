@@ -1,0 +1,52 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go workspace
+go.work
+
+# Build output
+/bin/
+/dist/
+/build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+/logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Cache
+/cache/
+*.cache
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+coverage.out
+coverage.html
+
+# Release
+release/

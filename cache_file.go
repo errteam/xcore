@@ -1,3 +1,7 @@
+// Package xcore provides file-based cache implementation.
+//
+// This package implements a file-based cache that stores cached data
+// as JSON files in a specified directory.
 package xcore
 
 import (
@@ -10,6 +14,8 @@ import (
 	"time"
 )
 
+// FileCache is a file-based cache implementation.
+// Data is stored as JSON files in the specified directory.
 type FileCache struct {
 	mu       sync.RWMutex
 	data     map[string]fileCacheItem

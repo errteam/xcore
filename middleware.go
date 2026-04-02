@@ -1,3 +1,17 @@
+// Package xcore provides HTTP middleware components for the xcore framework.
+//
+// This package includes various middleware implementations for common HTTP functionality:
+//
+//   - Recovery: Panics are recovered and logged, returning a 503 response
+//   - RequestID: Adds a unique request ID to each request (X-Request-ID header)
+//   - Compression: Gzip compression for responses
+//   - BodyParser: Limits and parses request body size
+//   - Timeout: Adds request timeout with automatic response
+//   - RealIP: Extracts the real client IP from proxies
+//   - MethodOverride: Allows POST requests to override HTTP method
+//
+// Each middleware is implemented as a struct with a Middleware() method that
+// returns an http.HandlerFunc for use with net/http or gorilla/mux.
 package xcore
 
 import (
@@ -12,14 +26,21 @@ import (
 	"github.com/google/uuid"
 )
 
+// Recovery is a middleware that recovers from panics in the handler chain.
+// When a panic occurs, it logs the error and returns a 503 Service Unavailable response.
+// The logger is optional and can be nil.
 type Recovery struct {
 	logger *Logger
 }
 
+// NewRecovery creates a new Recovery middleware with an optional logger.
+// If logger is nil, panic information will not be logged.
 func NewRecovery(logger *Logger) *Recovery {
 	return &Recovery{logger: logger}
 }
 
+// Middleware returns an http.Handler that recovers from panics in the next handler.
+// If a panic occurs, it logs the panic details and returns a 503 response.
 func (r *Recovery) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		defer func() {
@@ -40,12 +61,19 @@ func (r *Recovery) Middleware(next http.Handler) http.Handler {
 	})
 }
 
+// RequestID is a middleware that adds a unique request ID to each request.
+// If the X-Request-ID header is already present, it uses that value.
+// Otherwise, it generates a new UUID.
+// The request ID is set in the response header and in the request context.
 type RequestID struct{}
 
+// NewRequestID creates a new RequestID middleware.
 func NewRequestID() *RequestID {
 	return &RequestID{}
 }
 
+// Middleware returns an http.Handler that adds a request ID to the request.
+// The ID is stored in the context (key: RequestIDKey) and response header.
 func (r *RequestID) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		requestID := req.Header.Get("X-Request-ID")
@@ -60,10 +88,16 @@ func (r *RequestID) Middleware(next http.Handler) http.Handler {
 	})
 }
 
+// Compression is a middleware that compresses HTTP responses using gzip.
+// The compression level is set during initialization (Default, Best, BestSpeed).
+// It checks the Accept-Encoding header and only compresses if gzip is supported.
 type Compression struct {
 	level int
 }
 
+// NewCompression creates a new Compression middleware with the specified level.
+// Valid levels are gzip.DefaultCompression (6), gzip.BestSpeed (1), gzip.BestCompression (9).
+// If an invalid level is provided, it defaults to gzip.DefaultCompression.
 func NewCompression(level int) *Compression {
 	if level < gzip.DefaultCompression || level > gzip.BestCompression {
 		level = gzip.DefaultCompression
@@ -89,6 +123,8 @@ func (g *gzipResponseWriter) Write(b []byte) (int, error) {
 	return g.writer.Write(b)
 }
 
+// Middleware returns an http.Handler that compresses responses using gzip.
+// It only compresses if the client accepts gzip encoding.
 func (c *Compression) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if !strings.Contains(r.Header.Get("Accept-Encoding"), "gzip") {
@@ -104,10 +140,15 @@ func (c *Compression) Middleware(next http.Handler) http.Handler {
 	})
 }
 
+// BodyParser is a middleware that validates and limits request body size.
+// It checks the Content-Length header against the maxSize limit.
+// For JSON requests, it also wraps the body reader with http.MaxBytesReader.
 type BodyParser struct {
 	maxSize int64
 }
 
+// NewBodyParser creates a new BodyParser middleware with the specified max size.
+// If maxSize <= 0, defaults to 10MB (10 << 20 bytes).
 func NewBodyParser(maxSize int64) *BodyParser {
 	if maxSize <= 0 {
 		maxSize = 10 << 20
@@ -115,6 +156,8 @@ func NewBodyParser(maxSize int64) *BodyParser {
 	return &BodyParser{maxSize: maxSize}
 }
 
+// Middleware returns an http.Handler that limits and validates request body size.
+// Only applies to POST, PUT, and PATCH requests with JSON content type.
 func (p *BodyParser) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" || r.Method == "PUT" || r.Method == "PATCH" {
@@ -132,6 +175,9 @@ func (p *BodyParser) Middleware(next http.Handler) http.Handler {
 	})
 }
 
+// Timeout is a middleware that adds a timeout to request processing.
+// If the request takes longer than the timeout duration, it returns a 503 response.
+// Uses context timeout and ensures the handler goroutine completes before returning.
 type Timeout struct {
 	timeout time.Duration
 	handler http.Handler
@@ -139,6 +185,8 @@ type Timeout struct {
 	mu      sync.Mutex
 }
 
+// NewTimeout creates a new Timeout middleware with the specified duration.
+// If timeout <= 0, defaults to 30 seconds.
 func NewTimeout(timeout time.Duration) *Timeout {
 	if timeout <= 0 {
 		timeout = 30 * time.Second
@@ -146,6 +194,8 @@ func NewTimeout(timeout time.Duration) *Timeout {
 	return &Timeout{timeout: timeout}
 }
 
+// Middleware returns an http.Handler that enforces a timeout on request processing.
+// If the handler doesn't complete within the timeout, a 503 response is returned.
 func (t *Timeout) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), t.timeout)
@@ -177,6 +227,9 @@ func (t *Timeout) Middleware(next http.Handler) http.Handler {
 	})
 }
 
+// timeoutWriter is a ResponseWriter wrapper that tracks whether a response
+// has been written. It is used by the Timeout middleware to detect if a
+// response was already sent before returning a timeout error.
 type timeoutWriter struct {
 	http.ResponseWriter
 	timeout time.Duration
@@ -203,12 +256,18 @@ func (w *timeoutWriter) Write(b []byte) (int, error) {
 	return w.ResponseWriter.Write(b)
 }
 
+// RealIP is a middleware that extracts the real client IP address from request headers.
+// It checks X-Real-IP header first, then X-Forwarded-For, and finally falls back to RemoteAddr.
+// The extracted IP is stored in the request context (key: RealIPKey).
 type RealIP struct{}
 
+// NewRealIP creates a new RealIP middleware.
 func NewRealIP() *RealIP {
 	return &RealIP{}
 }
 
+// Middleware returns an http.Handler that extracts the real client IP.
+// The IP is stored in context with key RealIPKey.
 func (r *RealIP) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		realIP := req.Header.Get("X-Real-IP")
@@ -227,12 +286,18 @@ func (r *RealIP) Middleware(next http.Handler) http.Handler {
 	})
 }
 
+// MethodOverride is a middleware that allows clients to override the HTTP method
+// using the X-HTTP-Method-Override header. This is useful when clients can only
+// send GET and POST requests but need to use PUT, PATCH, or DELETE.
 type MethodOverride struct{}
 
+// NewMethodOverride creates a new MethodOverride middleware.
 func NewMethodOverride() *MethodOverride {
 	return &MethodOverride{}
 }
 
+// Middleware returns an http.Handler that allows method override via header.
+// Only applies to POST requests with X-HTTP-Method-Override header.
 func (m *MethodOverride) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {

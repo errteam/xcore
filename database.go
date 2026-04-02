@@ -1,3 +1,8 @@
+// Package xcore provides database functionality using GORM.
+//
+// This package wraps the GORM ORM to provide database operations with
+// support for PostgreSQL, MySQL, SQLite, and SQL Server.
+// It includes connection pooling, transaction support, and health checks.
 package xcore
 
 import (
@@ -17,6 +22,7 @@ import (
 
 const ctxTxKey contextKey = "TxKey"
 
+// Database wraps a GORM DB instance with configuration and logging.
 type Database struct {
 	*gorm.DB
 	config *DatabaseConfig
@@ -24,6 +30,7 @@ type Database struct {
 	mu     sync.RWMutex
 }
 
+// DBHealth represents the health status of a database connection.
 type DBHealth struct {
 	Status    string        `json:"status"`
 	Latency   time.Duration `json:"latency,omitempty"`
@@ -31,6 +38,7 @@ type DBHealth struct {
 	ConnStats ConnStats     `json:"conn_stats,omitempty"`
 }
 
+// ConnStats holds database connection pool statistics.
 type ConnStats struct {
 	OpenConns    int           `json:"open_conns"`
 	IdleConns    int           `json:"idle_conns"`
@@ -40,10 +48,12 @@ type ConnStats struct {
 	MaxOpenConns int           `json:"max_open_conns"`
 }
 
+// Database returns the underlying sql.DB instance for direct SQL operations.
 func (d *Database) Database() (*sql.DB, error) {
 	return d.DB.DB()
 }
 
+// PoolStats returns connection pool statistics.
 func (d *Database) PoolStats(ctx context.Context) (ConnStats, error) {
 	sqlDB, err := d.Database()
 	if err != nil {
@@ -61,6 +71,8 @@ func (d *Database) PoolStats(ctx context.Context) (ConnStats, error) {
 	}, nil
 }
 
+// Health checks the database connection and returns health status.
+// Includes latency measurement and connection pool stats.
 func (d *Database) Health(ctx context.Context) DBHealth {
 	start := time.Now()
 	sqlDB, err := d.Database()
@@ -87,6 +99,7 @@ func (d *Database) Health(ctx context.Context) DBHealth {
 	}
 }
 
+// Ping pings the database to check connectivity.
 func (d *Database) Ping(ctx context.Context) error {
 	sqlDB, err := d.Database()
 	if err != nil {
@@ -95,6 +108,7 @@ func (d *Database) Ping(ctx context.Context) error {
 	return sqlDB.PingContext(ctx)
 }
 
+// Close closes the underlying database connection.
 func (d *Database) Close() error {
 	sqlDB, err := d.Database()
 	if err != nil {
@@ -103,6 +117,10 @@ func (d *Database) Close() error {
 	return sqlDB.Close()
 }
 
+// Transaction executes a function within a database transaction.
+// If the function returns an error, the transaction is rolled back.
+// Otherwise, the transaction is committed.
+// The transaction is passed to the function via context (ctxTxKey).
 func (d *Database) Transaction(ctx context.Context, fn func(ctx context.Context) error) error {
 	return d.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		ctx = context.WithValue(ctx, ctxTxKey, tx)
@@ -110,6 +128,9 @@ func (d *Database) Transaction(ctx context.Context, fn func(ctx context.Context)
 	})
 }
 
+// ConnectWithRetry attempts to connect to the database with retry logic.
+// It will retry up to maxRetries times with the specified retryDelay between attempts.
+// Returns the connected database or an error if all retries fail.
 func (d *Database) ConnectWithRetry(cfg *DatabaseConfig, logger *Logger, maxRetries int, retryDelay time.Duration) (*Database, error) {
 	var lastErr error
 	for i := 0; i < maxRetries; i++ {
@@ -126,6 +147,9 @@ func (d *Database) ConnectWithRetry(cfg *DatabaseConfig, logger *Logger, maxRetr
 	return nil, fmt.Errorf("failed to connect after %d retries: %w", maxRetries, lastErr)
 }
 
+// NewDatabase creates a new Database instance with the given configuration.
+// Supports drivers: postgres, mysql, sqlite, sqlserver.
+// Configures connection pooling with default or custom values.
 func NewDatabase(cfg *DatabaseConfig, logger *Logger) (*Database, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("database config is required")
@@ -201,6 +225,7 @@ func NewDatabase(cfg *DatabaseConfig, logger *Logger) (*Database, error) {
 	}, nil
 }
 
+// getDSN builds the database connection string (DSN) based on the driver type.
 func getDSN(cfg *DatabaseConfig) string {
 	switch cfg.Driver {
 	case "postgres":
@@ -245,6 +270,7 @@ func getDSN(cfg *DatabaseConfig) string {
 	}
 }
 
+// getGormLogLevel converts a string log level to GORM's log level.
 func getGormLogLevel(level string) logger.LogLevel {
 	switch level {
 	case "silent":
@@ -260,6 +286,7 @@ func getGormLogLevel(level string) logger.LogLevel {
 	}
 }
 
+// GormLogger wraps the xcore Logger for GORM logging.
 type GormLogger struct {
 	logger   *Logger
 	logLevel logger.LogLevel

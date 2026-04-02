@@ -1,3 +1,8 @@
+// Package xcore provides request validation functionality.
+//
+// This package wraps the go-playground/validator library to provide
+// struct-based validation for HTTP requests. Tags with the name "validate"
+// are used to specify validation rules.
 package xcore
 
 import (
@@ -17,6 +22,7 @@ func init() {
 	validate.SetTagName("validate")
 }
 
+// ValidationError represents a single field validation error.
 type ValidationError struct {
 	Field   string      `json:"field"`
 	Message string      `json:"message"`

@@ -1,5 +1,14 @@
 package xcore
 
+// Package xcore provides configuration structs for the xcore framework.
+//
+// This package defines all configuration structures used throughout the framework.
+// Each config struct maps to a specific component (HTTP, Database, Cache, etc.)
+// and can be loaded from configuration files or environment variables.
+//
+// Configuration structs use mapstructure, yaml, and json tags for flexible loading
+// with tools like Viper.
+
 // HTTPConfig defines the configuration for the HTTP server.
 type HTTPConfig struct {
 	Host         string           `mapstructure:"host" yaml:"host" json:"host"`
@@ -98,12 +107,13 @@ type CronConfig struct {
 
 // WebsocketConfig defines the WebSocket configuration.
 type WebsocketConfig struct {
-	ReadBufferSize  int   `mapstructure:"read_buffer_size" yaml:"read_buffer_size" json:"read_buffer_size"`
-	WriteBufferSize int   `mapstructure:"write_buffer_size" yaml:"write_buffer_size" json:"write_buffer_size"`
-	PingInterval    int   `mapstructure:"ping_interval" yaml:"ping_interval" json:"ping_interval"`
-	PongTimeout     int   `mapstructure:"pong_timeout" yaml:"pong_timeout" json:"pong_timeout"`
-	MaxMessageSize  int64 `mapstructure:"max_message_size" yaml:"max_message_size" json:"max_message_size"`
-	Enabled         bool  `mapstructure:"enabled" yaml:"enabled" json:"enabled"`
+	ReadBufferSize  int      `mapstructure:"read_buffer_size" yaml:"read_buffer_size" json:"read_buffer_size"`
+	WriteBufferSize int      `mapstructure:"write_buffer_size" yaml:"write_buffer_size" json:"write_buffer_size"`
+	PingInterval    int      `mapstructure:"ping_interval" yaml:"ping_interval" json:"ping_interval"`
+	PongTimeout     int      `mapstructure:"pong_timeout" yaml:"pong_timeout" json:"pong_timeout"`
+	MaxMessageSize  int64    `mapstructure:"max_message_size" yaml:"max_message_size" json:"max_message_size"`
+	Enabled         bool     `mapstructure:"enabled" yaml:"enabled" json:"enabled"`
+	AllowedOrigins  []string `mapstructure:"allowed_origins" yaml:"allowed_origins" json:"allowed_origins"`
 }
 
 // GracefulConfig defines the graceful shutdown configuration.

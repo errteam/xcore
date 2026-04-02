@@ -1,3 +1,10 @@
+// Package xcore provides CORS (Cross-Origin Resource Sharing) middleware for the xcore framework.
+//
+// This package provides middleware for handling CORS headers in HTTP responses.
+// It supports configurable allowed origins, methods, headers, and credentials.
+//
+// The middleware handles OPTIONS preflight requests automatically and returns
+// the appropriate CORS headers based on the configuration.
 package xcore
 
 import (
@@ -6,10 +13,24 @@ import (
 	"strings"
 )
 
+// CORSMiddleware handles CORS headers for HTTP requests.
+// It validates the Origin header against allowed origins and sets appropriate response headers.
 type CORSMiddleware struct {
 	config *CORSConfig
 }
 
+// NewCORSMiddleware creates a new CORS middleware with the given configuration.
+// If config is nil, default configuration is used:
+//   - AllowedOrigins: ["*"]
+//   - AllowedMethods: [GET, POST, PUT, DELETE, OPTIONS]
+//   - AllowedHeaders: [Content-Type, Authorization]
+//   - AllowCredentials: false
+//   - MaxAge: 0 (no caching)
+//   - ExposedHeaders: []
+//   - Enabled: true
+//
+// Note: When AllowCredentials is true, wildcards ("*") in AllowedOrigins are replaced
+// with an empty string to comply with CORS specification.
 func NewCORSMiddleware(cfg *CORSConfig) *CORSMiddleware {
 	if cfg == nil {
 		cfg = &CORSConfig{
@@ -35,6 +56,9 @@ func NewCORSMiddleware(cfg *CORSConfig) *CORSMiddleware {
 	return &CORSMiddleware{config: cfg}
 }
 
+// Handler returns an http.Handler that applies CORS rules to requests.
+// If CORS is disabled (config.Enabled = false), passes through to next handler unchanged.
+// For OPTIONS requests (preflight), returns 204 No Content with appropriate headers.
 func (m *CORSMiddleware) Handler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if !m.config.Enabled {
@@ -93,6 +117,8 @@ func (m *CORSMiddleware) Handler(next http.Handler) http.Handler {
 	})
 }
 
+// MiddlewareFunc returns the middleware as a function type.
+// Convenience method for use with router.Use() or similar.
 func (m *CORSMiddleware) MiddlewareFunc() func(http.Handler) http.Handler {
 	return m.Handler
 }
